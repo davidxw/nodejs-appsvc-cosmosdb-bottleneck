@@ -11,6 +11,7 @@ pool:
 
 variables:
   webAppName: 'dwazureloadtest'
+  webAppResourceGroup: 'dwazureloadtestaustraliaeast-rg'
   serviceConnection: 'azureloadtest'
   azureSubscriptionId: '8b20cf3a-4f12-44df-bc4a-f9a0fc9fb115'
   loadTestResource: 'dwazureloadtest'
@@ -58,11 +59,11 @@ stages:
         azureResourceManagerConnection: $(serviceConnection)
         subscriptionId: $(azureSubscriptionId)
         action: 'Create Or Update Resource Group'
-        resourceGroupName: '$(webAppName)-rg'
+        resourceGroupName: $(webAppResourceGroup)
         location: 'East US'
         templateLocation: 'Linked artifact'
         csmFile: '$(System.DefaultWorkingDirectory)/windows-webapp-template.json'
-        overrideParameters: '-webAppName $(webAppName) -hostingPlanName $(webAppName)-host -appInsightsLocation "East US" -databaseAccountId $(webAppName)db -databaseAccountLocation "East US"'
+        overrideParameters: '-webAppName $(webAppName) -hostingPlanName $(webAppName)-host -appInsightsLocation "$(location)" -databaseAccountId $(webAppName)db -databaseAccountLocation "$(location)"'
         deploymentMode: 'Incremental'
         deploymentOutputs: 'output'
     
@@ -78,7 +79,7 @@ stages:
       inputs:
         azureSubscription: $(serviceConnection)
         appName: '$(webAppName)'
-        resourceGroupName: '$(webAppName)-rg'
+        resourceGroupName: $(webAppResourceGroup)
         appSettings: |
           [
              {
