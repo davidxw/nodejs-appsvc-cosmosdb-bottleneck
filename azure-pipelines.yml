@@ -11,7 +11,7 @@ pool:
 
 variables:
   webAppName: 'dwazureloadtest'
-  serviceConnection: '<Name of your webARM Service connection>'
+  serviceConnection: 'azureloadtest'
   azureSubscriptionId: '8b20cf3a-4f12-44df-bc4a-f9a0fc9fb115'
   loadTestResource: 'dwazureloadtest'
   loadTestResourceGroup: 'dwazureloadtestaustraliaeast-rg'
