@@ -108,15 +108,15 @@ stages:
       inputs:
         artifact: drop
 
-    - task: AzureRmWebAppDeployment@4
-      inputs:
-        ConnectionType: 'AzureRM'
-        azureSubscription: $(serviceConnection)
-        appType: 'webApp'
-        WebAppName: $(webAppName)
-        packageForLinux: '$(Pipeline.Workspace)/$(Build.BuildId).zip'
-        ScriptType: 'Inline Script'
-        InlineScript: 'npm install'
+#    - task: AzureRmWebAppDeployment@4
+#      inputs:
+#        ConnectionType: 'AzureRM'
+#        azureSubscription: $(serviceConnection)
+#        appType: 'webApp'
+#        WebAppName: $(webAppName)
+#        packageForLinux: '$(Pipeline.Workspace)/$(Build.BuildId).zip'
+#        ScriptType: 'Inline Script'
+#        InlineScript: 'npm install'
 
 - stage: LoadTest
   displayName: Load Test
