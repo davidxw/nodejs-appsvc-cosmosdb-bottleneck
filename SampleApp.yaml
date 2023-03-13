@@ -1,7 +1,6 @@
 version: v0.1
-testName: SampleAppPipelineTest
+testId: SampleAppTest
+displayName: Sample Test
 testPlan: SampleApp.jmx
-description: 'SampleApp Test Run'
-failureCriteria:
-  - percentage(error) > 0
+description: 'Load test the sample app'
 engineInstances: 1

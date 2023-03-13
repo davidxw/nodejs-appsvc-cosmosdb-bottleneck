@@ -59,8 +59,8 @@ stages:
         azureResourceManagerConnection: $(serviceConnection)
         subscriptionId: $(azureSubscriptionId)
         action: 'Create Or Update Resource Group'
-        resourceGroupName: $(webAppResourceGroup)
-        location: 'East US'
+        resourceGroupName: '$(webAppName)-rg'
+        location: $(location)
         templateLocation: 'Linked artifact'
         csmFile: '$(System.DefaultWorkingDirectory)/windows-webapp-template.json'
         overrideParameters: '-webAppName $(webAppName) -hostingPlanName $(webAppName)-host -appInsightsLocation "$(location)" -databaseAccountId $(webAppName)db -databaseAccountLocation "$(location)"'
@@ -128,12 +128,34 @@ stages:
     pool:
       vmImage: ubuntu-latest
     steps:
+    
+    - task: AzureResourceManagerTemplateDeployment@3
+      inputs:
+        deploymentScope: 'Resource Group'
+        azureResourceManagerConnection: $(serviceConnection)
+        subscriptionId: $(azureSubscriptionId)
+        action: 'Create Or Update Resource Group'
+        resourceGroupName: $(loadTestResourceGroup)
+        location: '$(location)'
+        templateLocation: 'Linked artifact'
+        csmFile: '$(System.DefaultWorkingDirectory)/ARMTemplate/template.json'
+        csmParametersFile: '$(System.DefaultWorkingDirectory)/ARMTemplate/parameters.json'
+        overrideParameters: '-name $(loadTestResource) -location "$(location)"'
+        deploymentMode: 'Incremental'    
+    
     - task: AzureLoadTest@1
       inputs:
         azureSubscription: $(serviceConnection)
         loadTestConfigFile: 'SampleApp.yaml'
         resourceGroup: $(loadTestResourceGroup)
         loadTestResource: $(loadTestResource)
-
+        env: |
+          [
+            {
+            "name": "webapp",
+            "value": "$(webAppName).azurewebsites.net"
+            }
+          ]
+          
     - publish: $(System.DefaultWorkingDirectory)/loadTest
       artifact: results
