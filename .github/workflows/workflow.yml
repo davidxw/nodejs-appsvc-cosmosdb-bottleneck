@@ -3,10 +3,7 @@
 name: Sample App test
 
 # Controls when the workflow will run
-on:
-  push:
-      branches:
-        - main
+on: workflow_dispatch
 
 env:
   AZURE_WEBAPP_NAME: "loadtestdemo1"    
@@ -21,7 +18,8 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:  
-
+        - name: Checkout GitHub Actions 
+        uses: actions/checkout@v2
     # steps to deploy the application - not shown in this demo
 
   loadTest:
